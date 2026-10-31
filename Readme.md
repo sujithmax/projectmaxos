@@ -19,6 +19,7 @@ repository/
         ├── css/style.css
         ├── js/main.js
         ├── images/maxos-logo.jpg
+        ├── images/void-banner.jpg (MaxOS Void banner used on the About page)
         ├── images/team/ (profile pictures for the Contribution page)
         └── images/gallery/ (150 uploaded screenshots)
 ```

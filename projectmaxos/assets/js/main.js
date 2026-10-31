@@ -1,4 +1,4 @@
-const toggle=document.querySelector('.menu-toggle');const nav=document.querySelector('.nav');if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));}const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear();
+const y=document.getElementById('year');if(y)y.textContent=new Date().getFullYear();
 // Gallery category filtering, scroll reveals and image lightbox.
 const galleryFilters=[...document.querySelectorAll('.gallery-filter')];
 const gallerySections=[...document.querySelectorAll('.gallery-category')];
@@ -58,8 +58,11 @@ people.forEach(person=>{
   const btn=person.querySelector('button'),pop=person.querySelector('.pop');
   btn.addEventListener('click',e=>{
     e.stopPropagation();
-    const open=!person.classList.contains('open');
+    const wasOpen=person.classList.contains('open');
+    // second tap on an open profile opens that member's Telegram (when one is set)
+    if(wasOpen&&btn.dataset.tg){window.open(btn.dataset.tg,'_blank','noopener');return;}
     closePeople(person);
+    const open=!wasOpen;
     person.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open));
     if(open){
       pop.style.setProperty('--shift','0px');
@@ -71,3 +74,30 @@ people.forEach(person=>{
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.pop'))closePeople();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closePeople();});
+
+// Home: the dragon background drifts, turns and softens as you scroll
+const logoBg=document.querySelector('.logo-bg');
+if(logoBg&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  let ticking=false;
+  const update=()=>{const s=window.scrollY;
+    logoBg.style.setProperty('--y',(-s*.32).toFixed(1)+'px');
+    logoBg.style.setProperty('--r',(s*.012).toFixed(2)+'deg');
+    logoBg.style.setProperty('--o',Math.max(.28,1-s/1300).toFixed(2));
+    ticking=false;};
+  window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}},{passive:true});
+  update();
+}
+
+// Every page: blocks come in one by one as you scroll
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+  const sel='.page-hero>*,.hero-copy>*,.facts span,.section-heading,.row,.rom,.request,.pill-links,.maintain,.community,.subhead,.founder>*,.team-head,.person,.sheet,.contribute>*,.editions,.edition-note,.gallery-toolbar';
+  const els=[...document.querySelectorAll(sel)];
+  els.forEach(el=>el.classList.add('reveal'));
+  const io=new IntersectionObserver(entries=>{
+    const shown=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top||a.boundingClientRect.left-b.boundingClientRect.left);
+    shown.forEach((e,i)=>{e.target.style.transitionDelay=Math.min(i,9)*80+'ms';e.target.classList.add('visible');io.unobserve(e.target);
+      setTimeout(()=>{e.target.style.transitionDelay='';},900);});
+  },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  els.forEach(el=>io.observe(el));
+})();
