@@ -293,3 +293,50 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .dock{animation:none}
   .logo-bg{transform:none;opacity:1}
 }
+
+/* ---- v3: liquid-glass dock, link capsules, vibe, maintainers, lightbox zoom ---- */
+body{padding-bottom:110px}
+.dock{background:rgba(255,255,255,.34);-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%);border:1px solid rgba(255,255,255,.8);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 2px rgba(255,255,255,.4),0 16px 40px rgba(36,56,40,.16);bottom:max(30px,calc(env(safe-area-inset-bottom) + 16px));gap:2px;padding:5px;color:#34443a}
+.dock a{padding:9px 14px}
+.dock a:hover{background:rgba(255,255,255,.5)}
+.dock a[aria-current="page"]{box-shadow:0 4px 12px rgba(78,17,25,.3)}
+
+.pill-links a,.row,.community,.maintain a{background:rgba(255,255,255,.36);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid rgba(255,255,255,.8);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 2px rgba(255,255,255,.35),0 12px 34px rgba(36,56,40,.1)}
+.pill-links a:hover,.maintain a:hover,.community a:hover{background:rgba(255,255,255,.55)}
+
+.rows{display:grid;gap:12px;border:0}
+.row{border-radius:28px;padding:20px 22px 20px 28px;transition:background .25s}
+.row:hover{background:rgba(255,255,255,.55)}
+.row-go{background:rgba(255,255,255,.75);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid rgba(255,255,255,.9)}
+
+.vibe{text-align:center;padding-top:28px}
+.vibe h2{font-size:clamp(30px,4.4vw,48px);letter-spacing:-.03em;line-height:1.1;margin:0 0 20px;font-weight:700}
+.vibe-word{font-family:"Dancing Script","Segoe Script","Brush Script MT",cursive;font-weight:700;font-size:1.4em;letter-spacing:0;color:var(--blood)}
+.vibe .community{max-width:760px;margin-inline:auto;text-align:left}
+
+.page-hero h1 .maxos-word{font-size:1.04em}
+.page-hero p{max-width:680px}
+.page-hero p+p{margin-top:12px}
+
+.rom-code .maint{font-size:14px;font-weight:700}
+.rom-code a.maint{color:var(--sage-deep);text-decoration:underline;text-underline-offset:3px}
+.rom-code a.maint:hover{color:var(--blood)}
+.rom-actions{flex-wrap:wrap}
+
+.lightbox{overflow:hidden}
+.lightbox img{position:relative;z-index:1;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;cursor:zoom-in;transform-origin:center;will-change:transform;transition:transform .12s ease-out}
+.lightbox img.zoomed{cursor:grab}
+.lightbox img.dragging{cursor:grabbing;transition:none}
+.lightbox button{z-index:3}
+.lightbox-caption{z-index:3}
+.lightbox-zoom{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.lightbox-zoom button{position:static;width:44px;height:44px;font-size:22px}
+.lightbox-zoom .zoom-reset{width:auto;border-radius:999px;padding:0 16px;font-size:13px;font-weight:700}
+
+@media(max-width:620px){
+  .dock{width:auto;max-width:calc(100% - 24px);justify-content:center;bottom:max(26px,calc(env(safe-area-inset-bottom) + 14px))}
+  .dock a{flex:none;padding:10px 10px;font-size:12px}
+  .row{border-radius:24px;padding:18px 16px 18px 20px}
+  .lightbox-zoom{bottom:56px}
+}
+@media(max-width:380px){.dock a{padding:10px 8px;font-size:11.5px}}
